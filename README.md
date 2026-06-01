@@ -2,6 +2,8 @@
 
 A VS Code extension for quickly running ROS2 launch files, Python nodes, and C++ nodes.
 
+> **Note**: This document is available in [Chinese](./README_zh.md) (中文版请查阅 [README_zh.md](./README_zh.md))
+
 ## Features
 
 ### 1. Launch ROS2 Files
@@ -41,10 +43,12 @@ The extension expects a standard ROS2 workspace structure:
 └── log/           # Log files
 ```
 
+Therefore, you need to run `colcon build` first before using this extension. If you only have source packages without building, the extension will not be able to find the correct package name.
+
 ## Usage
 
-1. Press `F5` to build and run the extension in debug mode
-2. Open a ROS2 workspace in VS Code
+1. Search for `ros2-quick-runner` in VS Code extensions and install it
+2. Open your ROS2 project in VS Code
 3. Right-click on a file in the explorer:
    - `.launch.py` files → "ROS2: Launch"
    - `.py` or `.cpp` files → "ROS2: Run"
@@ -61,7 +65,7 @@ The extension expects a standard ROS2 workspace structure:
 ## Requirements
 
 - VS Code 1.80.0 or higher
-- ROS2 installed and sourced
+- ROS2 installed (e.g., ROS 2 Humble)
 - A compiled ROS2 workspace with `install/` directory
 
 ## Release Notes
@@ -72,3 +76,7 @@ The extension expects a standard ROS2 workspace structure:
 - Support for ROS2 launch files, Python nodes, and C++ nodes
 - Automatic workspace detection
 - Automatic package name extraction
+
+---
+
+For Chinese documentation, please see: [README_zh.md](./README_zh.md)

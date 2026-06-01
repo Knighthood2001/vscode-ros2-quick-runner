@@ -2,6 +2,8 @@
 
 一款用于快速运行 ROS2 launch 文件、Python 节点和 C++ 节点的 VS Code 扩展。
 
+> **注意**：本文档亦有 [英文版](./README.md)，如需查看请移步 [README.md](./README.md)
+
 ## 功能特性
 
 ### 1. 启动 ROS2 Launch 文件
@@ -41,10 +43,12 @@
 └── log/           # 日志文件
 ```
 
+因此，该扩展需要你首先进行 `colcon build` 操作，然后才能正常使用。如果你使用的是源代码包，而没有进行编译，扩展将无法找到正确的包名。
+
 ## 使用方法
 
-1. 按 `F5` 以调试模式构建并运行扩展
-2. 在 VS Code 中打开 ROS2 工作空间
+1. 在 VS Code 扩展中搜索 `ros2-quick-runner` 并进行安装
+2. 在 VS Code 中打开 ROS2 项目
 3. 在文件资源管理器中右键点击文件：
    - `.launch.py` 文件 → "ROS2: Launch"
    - `.py` 或 `.cpp` 文件 → "ROS2: Run"
@@ -61,7 +65,7 @@
 ## 系统要求
 
 - VS Code 1.80.0 或更高版本
-- 已安装并 source 过 ROS2
+- 已安装 ROS2 环境（例如 ROS 2 Humble）
 - 已编译的 ROS2 工作空间（包含 `install/` 目录）
 
 ## 更新日志
@@ -72,3 +76,7 @@
 - 支持 ROS2 launch 文件、Python 节点和 C++ 节点
 - 自动检测工作空间
 - 自动提取包名
+
+---
+
+英文文档请查看：[README.md](./README.md)

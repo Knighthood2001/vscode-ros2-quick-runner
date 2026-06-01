@@ -54,9 +54,11 @@ function activate(context) {
 			const workspaceName = path.basename(workspacePath);
 			const installPath = path.join(workspacePath, 'install', 'setup.bash');
 
-			await vscode.env.clipboard.writeText(`source ${installPath}`);
+			const terminal = vscode.window.createTerminal(`ROS2: ${workspaceName}`);
+			terminal.sendText(`source ${installPath}`);
+			terminal.show();
 
-			vscode.window.showInformationMessage(`Workspace "${workspaceName}" found! Command copied to clipboard.`);
+			vscode.window.showInformationMessage(`Workspace "${workspaceName}" activated in terminal!`);
 		} else {
 			vscode.window.showWarningMessage('No ROS2 workspace found for this file.');
 		}

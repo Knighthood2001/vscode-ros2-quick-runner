@@ -63,17 +63,6 @@ function activate(context) {
 		}
 
 		const filePath = uri.fsPath;
-		const fileName = path.basename(filePath);
-		const fileExt = path.extname(filePath);
-
-		console.log('=== DEBUG INFO ===');
-		console.log('filePath:', filePath);
-		console.log('fileName (resourceFilename):', fileName);
-		console.log('fileExt (resourceExtname):', fileExt);
-		console.log('==================');
-
-		vscode.window.showInformationMessage(`Filename: ${fileName}, Ext: ${fileExt}`);
-
 		const workspacePath = findRos2Workspace(filePath);
 
 		if (workspacePath) {

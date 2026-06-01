@@ -1,65 +1,74 @@
-# ros2-quick-runner README
+# ROS2 Quick Runner
 
-This is the README for your extension "ros2-quick-runner". After writing up a brief description, we recommend including the following sections.
+A VS Code extension for quickly running ROS2 launch files, Python nodes, and C++ nodes.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### 1. Launch ROS2 Files
+Right-click any `.launch.py` file and select **"ROS2: Launch"** to:
+- Automatically find the ROS2 workspace
+- Source the workspace's `install/setup.bash`
+- Execute `ros2 launch <package_name> <launch_file>`
 
-For example if there is an image subfolder under your extension project workspace:
+### 2. Run ROS2 Nodes
+Right-click any `.py` or `.cpp` file and select **"ROS2: Run"** to:
+- Automatically find the ROS2 workspace and package name
+- Source the workspace's `install/setup.bash`
+- Execute `ros2 run <package_name> <node_name>`
 
-\!\[feature X\]\(images/feature-x.png\)
+### 3. Get Workspace Name
+Right-click any file and select **"Get ROS2 Workspace Name"** to:
+- Display the workspace name
+- Source the workspace in a new terminal
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## How It Works
+
+The extension automatically:
+
+1. **Finds the ROS2 workspace** by searching for directories containing both `src/` and `install/` folders
+2. **Extracts the package name** by parsing the `package.xml` file in the package directory
+3. **Executes commands** in a new VS Code terminal
+
+## Directory Structure
+
+The extension expects a standard ROS2 workspace structure:
+
+```
+~/ros2_ws/
+├── src/           # Source packages
+├── install/       # Built packages (after colcon build)
+├── build/         # Build files
+└── log/           # Log files
+```
+
+## Usage
+
+1. Press `F5` to build and run the extension in debug mode
+2. Open a ROS2 workspace in VS Code
+3. Right-click on a file in the explorer:
+   - `.launch.py` files → "ROS2: Launch"
+   - `.py` or `.cpp` files → "ROS2: Run"
+   - Any file → "Get ROS2 Workspace Name"
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `ros2-quick-runner.ros2launch` | Launch a `.launch.py` file |
+| `ros2-quick-runner.ros2run` | Run a Python or C++ node |
+| `ros2-quick-runner.getWorkspaceName` | Get and source the workspace |
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- VS Code 1.80.0 or higher
+- ROS2 installed and sourced
+- A compiled ROS2 workspace with `install/` directory
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Initial release
+- Support for ROS2 launch files, Python nodes, and C++ nodes
+- Automatic workspace detection
+- Automatic package name extraction

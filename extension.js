@@ -1,9 +1,6 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
-
 
 function findRos2Workspace(filePath) {
 	const dir = path.dirname(filePath);
@@ -31,23 +28,52 @@ function findRos2Workspace(filePath) {
 	return null;
 }
 
+async function getPackageNameFromPath(filePath) {
+	let currentPath = path.dirname(filePath);
+	let depth = 0;
+	const maxDepth = 10;
+
+	while (currentPath !== path.dirname(currentPath) && depth < maxDepth) {
+		const packageXmlPath = path.join(currentPath, 'package.xml');
+		if (fs.existsSync(packageXmlPath)) {
+			const packageXmlContent = fs.readFileSync(packageXmlPath, 'utf8');
+			const match = /<name>([\w-]+)<\/name>/.exec(packageXmlContent);
+			if (match && match[1]) {
+				return match[1];
+			}
+		}
+		currentPath = path.dirname(currentPath);
+		depth++;
+	}
+
+	return null;
+}
+
 function activate(context) {
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "ros2-quick-runner" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
 	const helloWorldDisposable = vscode.commands.registerCommand('ros2-quick-runner.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from ros2-quick-runner!');
 	});
 
 	const getWorkspaceNameDisposable = vscode.commands.registerCommand('ros2-quick-runner.getWorkspaceName', async function (uri) {
+		if (!uri) {
+			vscode.window.showErrorMessage('Please right-click a file in the explorer');
+			return;
+		}
+
 		const filePath = uri.fsPath;
+		const fileName = path.basename(filePath);
+		const fileExt = path.extname(filePath);
+
+		console.log('=== DEBUG INFO ===');
+		console.log('filePath:', filePath);
+		console.log('fileName (resourceFilename):', fileName);
+		console.log('fileExt (resourceExtname):', fileExt);
+		console.log('==================');
+
+		vscode.window.showInformationMessage(`Filename: ${fileName}, Ext: ${fileExt}`);
+
 		const workspacePath = findRos2Workspace(filePath);
 
 		if (workspacePath) {
@@ -55,7 +81,7 @@ function activate(context) {
 			const installPath = path.join(workspacePath, 'install', 'setup.bash');
 
 			const terminal = vscode.window.createTerminal(`ROS2: ${workspaceName}`);
-			terminal.sendText(`source ${installPath}`);
+			terminal.sendText(`source "${installPath}"`);
 			terminal.show();
 
 			vscode.window.showInformationMessage(`Workspace "${workspaceName}" activated in terminal!`);
@@ -64,13 +90,92 @@ function activate(context) {
 		}
 	});
 
-	context.subscriptions.push(helloWorldDisposable, getWorkspaceNameDisposable);
+	const ros2launchDisposable = vscode.commands.registerCommand('ros2-quick-runner.ros2launch', async (uri) => {
+		if (!uri) {
+			vscode.window.showErrorMessage('Please right-click a launch file in the explorer');
+			return;
+		}
+
+		const filePath = uri.fsPath;
+		const workspacePath = findRos2Workspace(filePath);
+
+		if (!workspacePath) {
+			vscode.window.showErrorMessage('No ROS2 workspace found');
+			return;
+		}
+
+		const packageName = await getPackageNameFromPath(filePath);
+		if (!packageName) {
+			vscode.window.showErrorMessage('Cannot find ROS package name');
+			return;
+		}
+
+		const launchFileName = path.basename(filePath);
+		const installPath = path.join(workspacePath, 'install', 'setup.bash');
+
+		const terminal = vscode.window.createTerminal(`ROS2 Launch: ${packageName}`);
+		terminal.show();
+		terminal.sendText(`source "${installPath}"`);
+		terminal.sendText(`ros2 launch ${packageName} ${launchFileName}`);
+	});
+
+	const ros2runDisposable = vscode.commands.registerCommand('ros2-quick-runner.ros2run', async (uri) => {
+		if (!uri) {
+			vscode.window.showErrorMessage('Please right-click a node file in the explorer');
+			return;
+		}
+
+		const filePath = uri.fsPath;
+		const fileName = path.basename(filePath);
+
+		if (fileName.endsWith('.launch.py')) {
+			vscode.window.showErrorMessage('This is a launch file. Please use "ROS2: Launch" command instead.');
+			return;
+		}
+
+		const workspacePath = findRos2Workspace(filePath);
+
+		if (!workspacePath) {
+			vscode.window.showErrorMessage('No ROS2 workspace found');
+			return;
+		}
+
+		const packageName = await getPackageNameFromPath(filePath);
+		if (!packageName) {
+			vscode.window.showErrorMessage('Cannot find ROS package name');
+			return;
+		}
+
+		const fileExt = path.extname(filePath);
+		const installPath = path.join(workspacePath, 'install', 'setup.bash');
+
+		if (fileExt === '.py') {
+			const terminal = vscode.window.createTerminal(`ROS2 Run: ${packageName}`);
+			terminal.show();
+			terminal.sendText(`source "${installPath}"`);
+			terminal.sendText(`ros2 run ${packageName} ${fileName}`);
+		} else if (fileExt === '.cpp') {
+			const executableName = path.basename(filePath, fileExt);
+			const terminal = vscode.window.createTerminal(`ROS2 Run: ${packageName}`);
+			terminal.show();
+			terminal.sendText(`source "${installPath}"`);
+			terminal.sendText(`ros2 run ${packageName} ${executableName}`);
+		} else {
+			vscode.window.showErrorMessage('Unsupported file type');
+		}
+	});
+
+	context.subscriptions.push(
+		helloWorldDisposable,
+		getWorkspaceNameDisposable,
+		ros2launchDisposable,
+		ros2runDisposable
+	);
 }
 
-// This method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
 	activate,
 	deactivate
-}
+};

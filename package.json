@@ -18,13 +18,31 @@
     }, {
       "command": "ros2-quick-runner.getWorkspaceName",
       "title": "Get ROS2 Workspace Name"
+    }, {
+      "command": "ros2-quick-runner.ros2launch",
+      "title": "ROS2: Launch"
+    }, {
+      "command": "ros2-quick-runner.ros2run",
+      "title": "ROS2: Run"
     }],
     "menus": {
-      "explorer/context": [{
-        "command": "ros2-quick-runner.getWorkspaceName",
-        "when": "explorerResourceIsFolder == false",
-        "group": "navigation"
-      }]
+      "explorer/context": [
+        {
+          "command": "ros2-quick-runner.getWorkspaceName",
+          "when": "!explorerResourceIsFolder",
+          "group": "navigation"
+        },
+        {
+          "command": "ros2-quick-runner.ros2launch",
+          "when": "resourceFilename =~ /\\.launch\\.py$/",
+          "group": "ROS2"
+        },
+        {
+          "command": "ros2-quick-runner.ros2run",
+          "when": "resourceExtname == .cpp || (resourceExtname == .py && !(resourceFilename =~ /\\.launch\\.py$/))",
+          "group": "ROS2"
+        }
+      ]
     }
   },
   "scripts": {

@@ -36,17 +36,17 @@
         {
           "command": "ros2-quick-runner.getWorkspaceName",
           "when": "!explorerResourceIsFolder",
-          "group": "navigation"
+          "group": "navigation@2"
         },
         {
           "command": "ros2-quick-runner.ros2launch",
           "when": "resourceFilename =~ /\\.launch\\.py$/",
-          "group": "ROS2"
+          "group": "navigation@1"
         },
         {
           "command": "ros2-quick-runner.ros2run",
           "when": "resourceExtname == .cpp || (resourceExtname == .py && !(resourceFilename =~ /\\.launch\\.py$/))",
-          "group": "ROS2"
+          "group": "navigation@1"
         }
       ]
     }

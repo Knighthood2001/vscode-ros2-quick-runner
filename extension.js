@@ -50,11 +50,7 @@ async function getPackageNameFromPath(filePath) {
 }
 
 function activate(context) {
-	console.log('Congratulations, your extension "ros2-quick-runner" is now active!');
-
-	const helloWorldDisposable = vscode.commands.registerCommand('ros2-quick-runner.helloWorld', function () {
-		vscode.window.showInformationMessage('Hello World from ros2-quick-runner!');
-	});
+	console.log('extension "ros2-quick-runner" is now active!');
 
 	const getWorkspaceNameDisposable = vscode.commands.registerCommand('ros2-quick-runner.getWorkspaceName', async function (uri) {
 		if (!uri) {
@@ -155,7 +151,6 @@ function activate(context) {
 	});
 
 	context.subscriptions.push(
-		helloWorldDisposable,
 		getWorkspaceNameDisposable,
 		ros2launchDisposable,
 		ros2runDisposable

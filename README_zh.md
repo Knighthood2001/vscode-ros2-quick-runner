@@ -70,7 +70,9 @@
 
 ## 更新日志
 
-### 0.0.1
+详细内容请查看：[CHANGELOG.md](./CHANGELOG.md)
+
+### 0.0.2
 
 - 初始版本发布
 - 支持 ROS2 launch 文件、Python 节点和 C++ 节点

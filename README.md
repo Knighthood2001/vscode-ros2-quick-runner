@@ -70,7 +70,9 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 
 ## Release Notes
 
-### 0.0.1
+For detailed changelog, please see: [CHANGELOG.md](./CHANGELOG.md)
+
+### 0.0.2
 
 - Initial release
 - Support for ROS2 launch files, Python nodes, and C++ nodes

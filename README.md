@@ -7,19 +7,19 @@ A VS Code extension for quickly running ROS2 launch files, Python nodes, and C++
 ## Features
 
 ### 1. Launch ROS2 Files
-Right-click any `.launch.py` file and select **"ROS2: Launch"** to:
+Right-click any `.launch.py` file and select **"ros2 launch"** to:
 - Automatically find the ROS2 workspace
 - Source the workspace's `install/setup.bash`
 - Execute `ros2 launch <package_name> <launch_file>`
 
 ### 2. Run ROS2 Nodes
-Right-click any `.py` or `.cpp` file and select **"ROS2: Run"** to:
+Right-click any `.py` or `.cpp` file and select **"ros2 run"** to:
 - Automatically find the ROS2 workspace and package name
 - Source the workspace's `install/setup.bash`
 - Execute `ros2 run <package_name> <node_name>`
 
 ### 3. Get Workspace Name
-Right-click any file and select **"Get ROS2 Workspace Name"** to:
+Right-click any file and select **"ros2 source"** to:
 - Display the workspace name
 - Source the workspace in a new terminal
 
@@ -50,9 +50,9 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 1. Search for `ros2-quick-runner` in VS Code extensions and install it
 2. Open your ROS2 project in VS Code
 3. Right-click on a file in the explorer:
-   - `.launch.py` files → "ROS2: Launch"
-   - `.py` or `.cpp` files → "ROS2: Run"
-   - Any file → "Get ROS2 Workspace Name"
+   - `.launch.py` files → "ros2 launch"
+   - `.py` or `.cpp` files → "ros2 run"
+   - Any file → "ros2 source"
 
 ## Commands
 
@@ -60,7 +60,7 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 |---------|-------------|
 | `ros2-quick-runner.ros2launch` | Launch a `.launch.py` file |
 | `ros2-quick-runner.ros2run` | Run a Python or C++ node |
-| `ros2-quick-runner.getWorkspaceName` | Get and source the workspace |
+| `ros2-quick-runner.getWorkspaceName` | Source the workspace |
 
 ## Requirements
 
@@ -72,7 +72,7 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 
 For detailed changelog, please see: [CHANGELOG.md](./CHANGELOG.md)
 
-### 0.0.2
+### 0.0.3
 
 - Initial release
 - Support for ROS2 launch files, Python nodes, and C++ nodes

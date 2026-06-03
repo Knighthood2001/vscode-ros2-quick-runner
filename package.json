@@ -3,7 +3,7 @@
   "displayName": "ros2-quick-runner",
   "description": "Quickly run ROS 2 launch, Python, and C++ files",
   "icon": "icon/ros2-quick-runner.ico",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "knighthood2001",
   "engines": {
     "vscode": "^1.80.0"
@@ -20,13 +20,13 @@
   "contributes": {
     "commands": [{
       "command": "ros2-quick-runner.getWorkspaceName",
-      "title": "Get ROS2 Workspace Name"
+      "title": "ros2 source"
     }, {
       "command": "ros2-quick-runner.ros2launch",
-      "title": "ROS2: Launch"
+      "title": "ros2 launch"
     }, {
       "command": "ros2-quick-runner.ros2run",
-      "title": "ROS2: Run"
+      "title": "ros2 run"
     }],
     "menus": {
       "explorer/context": [

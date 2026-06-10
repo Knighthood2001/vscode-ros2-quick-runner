@@ -23,11 +23,22 @@
 - 显示工作空间名称
 - 在新终端中 source 该工作空间
 
+### 4. 编译 ROS2 工作空间
+在工作空间中的任意文件夹上右键，选择 **"colcon build"** 即可：
+- 自动查找 ROS2 工作空间根目录
+- 在工作空间根目录打开终端
+- 执行 `colcon build`
+
+**智能路径识别**：
+- 右键 `xxx_ws/` → 在 `xxx_ws/` 中 build
+- 右键 `xxx_ws/src/` → 在 `xxx_ws/` 中 build
+- 右键任意子目录（如 `xxx_ws/src/pkg_a`）→ 在 `xxx_ws/` 中 build
+
 ## 工作原理
 
 扩展会自动完成以下操作：
 
-1. **查找 ROS2 工作空间** - 通过搜索同时包含 `src/` 和 `install/` 目录的目录来确定
+1. **查找 ROS2 工作空间** - 通过查找 `src/` 子目录下包含 `package.xml` 的目录来确定
 2. **提取包名** - 通过解析包目录下的 `package.xml` 文件获取
 3. **执行命令** - 在新的 VS Code 终端中执行命令
 
@@ -49,10 +60,11 @@
 
 1. 在 VS Code 扩展中搜索 `ros2-quick-runner` 并进行安装
 2. 在 VS Code 中打开 ROS2 项目
-3. 在文件资源管理器中右键点击文件：
+3. 在文件资源管理器中右键点击：
    - `.launch.py` 文件 → "ros2 launch"
    - `.py` 或 `.cpp` 文件 → "ros2 run"
    - 任意文件 → "ros2 source"
+   - 任意文件夹 → "colcon build"
 
 ## 命令列表
 
@@ -60,7 +72,8 @@
 |------|------|
 | `ros2-quick-runner.ros2launch` | 启动 `.launch.py` 文件 |
 | `ros2-quick-runner.ros2run` | 运行 Python 或 C++ 节点 |
-| `ros2-quick-runner.getWorkspaceName` | source 工作空间 |
+| `ros2-quick-runner.getWorkspaceName` | 获取并 source 工作空间 |
+| `ros2-quick-runner.colconBuild` | 编译 ROS2 工作空间 |
 
 ## 系统要求
 

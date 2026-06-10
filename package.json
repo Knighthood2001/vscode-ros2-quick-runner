@@ -3,7 +3,7 @@
   "displayName": "ros2-quick-runner",
   "description": "Quickly run ROS 2 launch, Python, and C++ files",
   "icon": "icon/ros2-quick-runner.ico",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "knighthood2001",
   "engines": {
     "vscode": "^1.80.0"

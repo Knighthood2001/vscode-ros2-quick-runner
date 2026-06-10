@@ -23,11 +23,22 @@ Right-click any file and select **"ros2 source"** to:
 - Display the workspace name
 - Source the workspace in a new terminal
 
+### 4. Build ROS2 Workspace
+Right-click any folder in your ROS2 workspace and select **"colcon build"** to:
+- Automatically find the ROS2 workspace root
+- Open a terminal at the workspace root
+- Execute `colcon build`
+
+**Smart path detection**:
+- Right-click `xxx_ws/` → build in `xxx_ws/`
+- Right-click `xxx_ws/src/` → build in `xxx_ws/`
+- Right-click any sub-folder (e.g. `xxx_ws/src/pkg_a`) → build in `xxx_ws/`
+
 ## How It Works
 
 The extension automatically:
 
-1. **Finds the ROS2 workspace** by searching for directories containing both `src/` and `install/` folders
+1. **Finds the ROS2 workspace** by searching for directories whose `src/` subdirectory contains at least one package with `package.xml`
 2. **Extracts the package name** by parsing the `package.xml` file in the package directory
 3. **Executes commands** in a new VS Code terminal
 
@@ -53,6 +64,7 @@ Therefore, you need to run `colcon build` first before using this extension. If 
    - `.launch.py` files → "ros2 launch"
    - `.py` or `.cpp` files → "ros2 run"
    - Any file → "ros2 source"
+   - Any folder → "colcon build"
 
 ## Commands
 
@@ -60,7 +72,8 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 |---------|-------------|
 | `ros2-quick-runner.ros2launch` | Launch a `.launch.py` file |
 | `ros2-quick-runner.ros2run` | Run a Python or C++ node |
-| `ros2-quick-runner.getWorkspaceName` | Source the workspace |
+| `ros2-quick-runner.getWorkspaceName` | Get and source the workspace |
+| `ros2-quick-runner.colconBuild` | Build the ROS2 workspace |
 
 ## Requirements
 

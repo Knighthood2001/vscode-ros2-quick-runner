@@ -12,17 +12,29 @@ function findRos2Workspace(filePath) {
 		const installPath = path.join(currentDir, 'install');
 		const srcPath = path.join(currentDir, 'src');
 
-		if (fs.existsSync(installPath) && fs.existsSync(srcPath)) {
+		// 优先判断：同时有 src/ 和 install/（已 build 的工作空间，最准确）
+		if (fs.existsSync(srcPath) && fs.existsSync(installPath)) {
 			return currentDir;
 		}
 
-		currentDir = path.dirname(currentDir);
-	}
+		// 兜底判断：只有 src/，但 src 目录下有包含 package.xml 的子目录（未 build 的工作空间）
+		if (fs.existsSync(srcPath)) {
+			try {
+				const items = fs.readdirSync(srcPath);
+				const hasPackage = items.some(item => {
+					const itemPath = path.join(srcPath, item);
+					return fs.statSync(itemPath).isDirectory() &&
+						fs.existsSync(path.join(itemPath, 'package.xml'));
+				});
+				if (hasPackage) {
+					return currentDir;
+				}
+			} catch {
+				// 忽略错误，继续向上查找
+			}
+		}
 
-	const rootInstall = path.join(root, 'install');
-	const rootSrc = path.join(root, 'src');
-	if (fs.existsSync(rootInstall) && fs.existsSync(rootSrc)) {
-		return root;
+		currentDir = path.dirname(currentDir);
 	}
 
 	return null;
@@ -150,10 +162,69 @@ function activate(context) {
 		}
 	});
 
+	const colconBuildDisposable = vscode.commands.registerCommand('ros2-quick-runner.colconBuild', async (uri) => {
+		if (!uri) {
+			vscode.window.showErrorMessage('Please right-click a folder in the explorer');
+			return;
+		}
+
+		const folderPath = uri.fsPath;
+		const folderName = path.basename(folderPath);
+
+		// 判断是否是工作空间根目录（src/ 下的子目录包含 package.xml）
+		function isWorkspaceRoot(dirPath) {
+			const srcPath = path.join(dirPath, 'src');
+			if (!fs.existsSync(srcPath)) {
+				return false;
+			}
+			try {
+				const items = fs.readdirSync(srcPath);
+				return items.some(item => {
+					const itemPath = path.join(srcPath, item);
+					return fs.statSync(itemPath).isDirectory() &&
+						fs.existsSync(path.join(itemPath, 'package.xml'));
+				});
+			} catch {
+				return false;
+			}
+		}
+
+		// 判断规则：
+		// 1. 如果右键的是工作空间根目录（src/ 下有 package.xml 的包）→ 直接 build
+		// 2. 如果右键的是 src 目录 → cd 到上一级再 build
+		// 3. 其他子目录 → cd 到工作空间根目录再 build
+		const isSrc = folderName === 'src';
+		const isRoot = isWorkspaceRoot(folderPath);
+
+		let buildPath;
+		if (isSrc) {
+			// 右键的是 src 目录，cd 到上一级
+			buildPath = path.dirname(folderPath);
+		} else if (isRoot) {
+			// 右键的是工作空间根目录
+			buildPath = folderPath;
+		} else {
+			// 其他子目录，尝试向上找到工作空间根目录
+			buildPath = findRos2Workspace(folderPath);
+			if (!buildPath) {
+				vscode.window.showErrorMessage('No ROS2 workspace found for this folder');
+				return;
+			}
+		}
+
+		const terminal = vscode.window.createTerminal({
+			name: `colcon build: ${path.basename(buildPath)}`,
+			cwd: buildPath
+		});
+		terminal.show();
+		terminal.sendText('colcon build');
+	});
+
 	context.subscriptions.push(
 		getWorkspaceNameDisposable,
 		ros2launchDisposable,
-		ros2runDisposable
+		ros2runDisposable,
+		colconBuildDisposable
 	);
 }
 

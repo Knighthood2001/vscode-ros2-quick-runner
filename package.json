@@ -27,6 +27,9 @@
     }, {
       "command": "ros2-quick-runner.ros2run",
       "title": "ros2 run"
+    }, {
+      "command": "ros2-quick-runner.colconBuild",
+      "title": "colcon build"
     }],
     "menus": {
       "explorer/context": [
@@ -43,6 +46,11 @@
         {
           "command": "ros2-quick-runner.ros2run",
           "when": "resourceExtname == .cpp || (resourceExtname == .py && !(resourceFilename =~ /\\.launch\\.py$/))",
+          "group": "navigation@1"
+        },
+        {
+          "command": "ros2-quick-runner.colconBuild",
+          "when": "explorerResourceIsFolder",
           "group": "navigation@1"
         }
       ]

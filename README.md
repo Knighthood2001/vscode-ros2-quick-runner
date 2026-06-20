@@ -85,13 +85,6 @@ Therefore, you need to run `colcon build` first before using this extension. If 
 
 For detailed changelog, please see: [CHANGELOG.md](./CHANGELOG.md)
 
-### 0.0.3
-
-- Initial release
-- Support for ROS2 launch files, Python nodes, and C++ nodes
-- Automatic workspace detection
-- Automatic package name extraction
-
 ---
 
 For Chinese documentation, please see: [README_zh.md](./README_zh.md)

@@ -70,13 +70,18 @@ function isRos2Package(dirPath) {
 function findNearestPackage(dirPath) {
 	let currentDir = dirPath;
 	const homeDir = process.env.HOME || process.env.USERPROFILE || '';
-	const root = path.dirname(currentDir);
+	const root = path.parse(currentDir).root;
 
 	while (currentDir !== root && currentDir !== homeDir) {
 		if (isRos2Package(currentDir)) {
 			return currentDir;
 		}
-		currentDir = path.dirname(currentDir);
+		const parent = path.dirname(currentDir);
+		// 防止到达根目录后 path.dirname 不变导致死循环
+		if (parent === currentDir) {
+			break;
+		}
+		currentDir = parent;
 	}
 	return null;
 }
@@ -118,6 +123,9 @@ function getBuildTarget(folderPath) {
 	const packagePath = findNearestPackage(folderPath);
 	if (packagePath) {
 		const workspacePath = findRos2Workspace(packagePath);
+		console.log('[colconBuild] folderPath:', folderPath);
+		console.log('[colconBuild] findNearestPackage →', packagePath);
+		console.log('[colconBuild] findRos2Workspace →', workspacePath);
 		if (workspacePath) {
 			return {
 				buildPath: workspacePath,

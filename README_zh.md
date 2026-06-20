@@ -85,13 +85,6 @@
 
 详细内容请查看：[CHANGELOG.md](./CHANGELOG.md)
 
-### 0.0.3
-
-- 初始版本发布
-- 支持 ROS2 launch 文件、Python 节点和 C++ 节点
-- 自动检测工作空间
-- 自动提取包名
-
 ---
 
 英文文档请查看：[README.md](./README.md)

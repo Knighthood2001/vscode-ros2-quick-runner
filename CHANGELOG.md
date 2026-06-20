@@ -2,6 +2,24 @@
 
 所有 "ros2-quick-runner" 扩展的重要更新都将记录在此文件中。
 
+## [0.0.5] - 2026-06-20
+
+### 新增
+
+- `colcon build` 智能识别编译目标
+  - 右键工作空间根目录 `xxx_ws/` → 全量编译 `colcon build`
+  - 右键 `xxx_ws/src/` → 全量编译 `colcon build`
+  - 右键任意包目录或包内子目录（如 `xxx_ws/src/pkg_a/`、`xxx_ws/src/pkg_a/scripts/`）→ **单包编译** `colcon build --packages-select pkg_a`
+- 终端名差异化
+  - 全量编译：`colcon build`
+  - 单包编译：`colcon build: pkg_a`
+
+### 优化
+
+- 重构编译相关代码
+  - 提取 `isRos2Package`、`findNearestPackage`、`isWorkspaceRoot`、`getBuildTarget` 等独立函数
+  - 编译逻辑更清晰、更易扩展
+
 ## [0.0.4] - 2026-06-10
 
 ### 新增
